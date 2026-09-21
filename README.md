@@ -61,7 +61,8 @@ goguma-test@example.com / ********   (닉네임: 고구마시험)
 | `src/middleware.ts` | 요청마다 토큰을 새로 고치고, 막힌 길을 지킵니다 |
 | `src/lib/supabase/` | 브라우저용 · 서버용 · 미들웨어용 손잡이 셋 |
 | `src/app/globals.css` | 색 한 벌과 부품들. `:root`만 바꾸면 계절이 바뀝니다 |
-| `supabase/migrations/` | 데이터베이스에 올린 것의 기록 |
+| `supabase/migrations/` | 데이터베이스에 올린 것의 기록 (표의 생김새) |
+| `supabase/seed/` | 장터를 눈으로 보려고 깔아 둔 샘플 물건 스무 가지 |
 
 ### 손잡이가 왜 셋인가
 
