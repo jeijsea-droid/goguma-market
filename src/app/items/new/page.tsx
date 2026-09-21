@@ -42,12 +42,14 @@ export default async function NewItemPage() {
         <div className="panel-body">
           <ItemForm
             action={createItem}
+            userId={user.id}
             initial={{
               title: "",
               body: "",
               price: null,
               category: "",
               region: profile?.region ?? "",
+              photos: [],
             }}
             submitLabel="장터에 올리기"
             pendingLabel="올리는 중…"
@@ -55,7 +57,7 @@ export default async function NewItemPage() {
         </div>
       </section>
 
-      <p className="foot">{SITE_NAME} · 사진은 다음 단계에 붙습니다</p>
+      <p className="foot">{SITE_NAME} · 사진은 다섯 장까지 걸 수 있습니다</p>
     </div>
   );
 }

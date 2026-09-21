@@ -6,10 +6,11 @@ import TopBar from "@/components/TopBar";
 import { createClient } from "@/lib/supabase/server";
 import { STATUS_LABEL, formatPrice, timeAgo, type Status } from "@/lib/items";
 import DeleteItemButton from "../DeleteItemButton";
+import PhotoGallery from "../PhotoGallery";
 import { setItemStatus } from "../actions";
 
 const FIELDS =
-  "id,seller_id,title,body,price,category,region,status,created_at,updated_at,seller:goguma_profiles(nickname)";
+  "id,seller_id,title,body,price,category,region,status,photos,created_at,updated_at,seller:goguma_profiles(nickname)";
 
 type Item = {
   id: string;
@@ -20,6 +21,7 @@ type Item = {
   category: string;
   region: string;
   status: Status;
+  photos: string[] | null;
   created_at: string;
   updated_at: string;
   seller: { nickname: string } | null;
@@ -54,6 +56,7 @@ export default async function ItemPage({ params }: { params: Promise<{ id: strin
 
   const mine = user?.id === item.seller_id;
   const edited = item.updated_at !== item.created_at;
+  const photos = item.photos ?? [];
 
   return (
     <div className="wrap narrow">
@@ -64,6 +67,14 @@ export default async function ItemPage({ params }: { params: Promise<{ id: strin
         tagline={`${item.category}${item.region ? " · " + item.region : ""}`}
         stamp={STATUS_LABEL[item.status]}
       />
+
+      {photos.length > 0 ? (
+        <section className="panel">
+          <div className="panel-body tight">
+            <PhotoGallery photos={photos} title={item.title} />
+          </div>
+        </section>
+      ) : null}
 
       <section className="panel">
         <div className="panel-head">

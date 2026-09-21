@@ -25,7 +25,7 @@ export default async function EditItemPage({
 
   const { data: item } = await supabase
     .from("goguma_items")
-    .select("id,seller_id,title,body,price,category,region")
+    .select("id,seller_id,title,body,price,category,region,photos")
     .eq("id", id)
     .maybeSingle();
 
@@ -62,6 +62,7 @@ export default async function EditItemPage({
         <div className="panel-body">
           <ItemForm
             action={updateItem}
+            userId={user.id}
             itemId={item.id}
             initial={{
               title: item.title,
@@ -69,6 +70,7 @@ export default async function EditItemPage({
               price: item.price,
               category: item.category,
               region: item.region,
+              photos: item.photos ?? [],
             }}
             submitLabel="고친 대로 올리기"
             pendingLabel="고치는 중…"

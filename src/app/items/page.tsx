@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import GogumaMark from "@/components/GogumaMark";
 import Masthead from "@/components/Masthead";
 import TopBar from "@/components/TopBar";
 import { createClient } from "@/lib/supabase/server";
@@ -12,6 +13,7 @@ import {
   timeAgo,
   type Status,
 } from "@/lib/items";
+import { photoUrl } from "@/lib/photos";
 import { SITE_NAME } from "@/lib/site";
 
 export const metadata: Metadata = { title: "장터" };
@@ -23,6 +25,7 @@ type Row = {
   category: string;
   region: string;
   status: Status;
+  photos: string[] | null;
   created_at: string;
   seller: { nickname: string } | null;
 };
@@ -52,7 +55,9 @@ export default async function ItemsPage({
 
   let query = supabase
     .from("goguma_items")
-    .select("id,title,price,category,region,status,created_at,seller:goguma_profiles(nickname)")
+    .select(
+      "id,title,price,category,region,status,photos,created_at,seller:goguma_profiles(nickname)"
+    )
     .order("created_at", { ascending: false })
     .limit(60);
 
@@ -145,25 +150,42 @@ export default async function ItemsPage({
         </section>
       ) : (
         <ul className="items">
-          {items.map((it) => (
-            <li key={it.id}>
-              <Link className="item-card" href={`/items/${it.id}`}>
-                <div className="item-top">
-                  <h3>{it.title}</h3>
-                  {it.status === "selling" ? null : (
-                    <span className={`badge ${it.status}`}>{STATUS_LABEL[it.status]}</span>
-                  )}
-                </div>
-                <p className="price">{formatPrice(it.price)}</p>
-                <p className="meta">
-                  <span>{it.category}</span>
-                  {it.region ? <span>{it.region}</span> : null}
-                  <span>{it.seller?.nickname ?? "탈퇴한 이웃"}</span>
-                  <span>{timeAgo(it.created_at)}</span>
-                </p>
-              </Link>
-            </li>
-          ))}
+          {items.map((it) => {
+            // 맨 앞 한 장이 대표 사진. 없으면 고구마 표시로 자리를 채워, 카드 높이가 들쭉날쭉하지 않게 한다.
+            const cover = it.photos?.[0];
+            return (
+              <li key={it.id}>
+                <Link className="item-card" href={`/items/${it.id}`}>
+                  <div className={cover ? "item-shot" : "item-shot bare"}>
+                    {cover ? (
+                      <img src={photoUrl(cover)} alt="" loading="lazy" />
+                    ) : (
+                      <GogumaMark />
+                    )}
+                    {it.photos && it.photos.length > 1 ? (
+                      <span className="shot-more">{it.photos.length}장</span>
+                    ) : null}
+                  </div>
+
+                  <div className="item-text">
+                    <div className="item-top">
+                      <h3>{it.title}</h3>
+                      {it.status === "selling" ? null : (
+                        <span className={`badge ${it.status}`}>{STATUS_LABEL[it.status]}</span>
+                      )}
+                    </div>
+                    <p className="price">{formatPrice(it.price)}</p>
+                    <p className="meta">
+                      <span>{it.category}</span>
+                      {it.region ? <span>{it.region}</span> : null}
+                      <span>{it.seller?.nickname ?? "탈퇴한 이웃"}</span>
+                      <span>{timeAgo(it.created_at)}</span>
+                    </p>
+                  </div>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       )}
 

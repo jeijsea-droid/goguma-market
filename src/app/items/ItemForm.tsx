@@ -2,6 +2,7 @@
 
 import { useActionState, useState } from "react";
 import { CATEGORIES, withCommas } from "@/lib/items";
+import PhotoPicker from "./PhotoPicker";
 import type { ItemFormState } from "./actions";
 
 const EMPTY: ItemFormState = {};
@@ -13,10 +14,13 @@ export type ItemDraft = {
   price: number | null;
   category: string;
   region: string;
+  /** 보관함 경로들. 맨 앞이 대표 사진. */
+  photos: string[];
 };
 
 export default function ItemForm({
   action,
+  userId,
   itemId,
   initial,
   submitLabel,
@@ -24,6 +28,8 @@ export default function ItemForm({
 }: {
   /** 서버 액션. 내놓기면 createItem, 고치기면 updateItem 이 건너온다. */
   action: (prev: ItemFormState, formData: FormData) => Promise<ItemFormState>;
+  /** 사진을 올릴 때 제 칸을 찾아가야 한다 — 보관함 자물쇠가 경로 맨 앞의 id 를 본다. */
+  userId: string;
   itemId?: string;
   initial?: ItemDraft;
   submitLabel: string;
@@ -39,6 +45,9 @@ export default function ItemForm({
   const [category, setCategory] = useState(initial?.category ?? "");
   const [region, setRegion] = useState(initial?.region ?? "");
   const [body, setBody] = useState(initial?.body ?? "");
+
+  // 사진이 아직 올라가는 중에 저장을 누르면 빠진 채로 저장된다. 그동안 저장을 잠가 둔다.
+  const [photosBusy, setPhotosBusy] = useState(false);
 
   /** 값 위에 얼마를 더 쌓는다. 가계부의 +1천 / +1만 버튼과 같은 손놀림. */
   function bump(amount: number) {
@@ -108,6 +117,12 @@ export default function ItemForm({
         </div>
       </div>
 
+      <PhotoPicker
+        userId={userId}
+        initial={initial?.photos ?? []}
+        onBusyChange={setPhotosBusy}
+      />
+
       <div className="field">
         <label htmlFor="region">동네</label>
         <input
@@ -136,8 +151,8 @@ export default function ItemForm({
         <p className="help">{body.length} / 2000자</p>
       </div>
 
-      <button className="submit" type="submit" disabled={pending}>
-        {pending ? pendingLabel : submitLabel}
+      <button className="submit" type="submit" disabled={pending || photosBusy}>
+        {pending ? pendingLabel : photosBusy ? "사진을 올리는 중…" : submitLabel}
       </button>
 
       <p className="note" role="status" aria-live="polite">
