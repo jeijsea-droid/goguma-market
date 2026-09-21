@@ -1,6 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import type { CookieToSet } from "./cookies";
+import { missingEnvMessage, readSupabaseEnv } from "./env";
 
 /** 로그인해야 들어갈 수 있는 길. 앞으로 /chat 이 늘어나면 여기에 적는다. */
 const PROTECTED = ["/mypage", "/items/new"];
@@ -16,11 +17,21 @@ const GUEST_ONLY = ["/login", "/signup"];
  * 이걸 빼먹으면 한 시간쯤 뒤에 저절로 로그아웃된 것처럼 보인다.
  */
 export async function updateSession(request: NextRequest) {
+  // 미들웨어는 모든 길목을 지나므로, 여기서 터지면 사이트 전체가 까닭 모를 500 이 된다.
+  // 설정이 비었을 때만은 던지지 말고, 무엇을 어디에 넣어야 하는지 적어 내준다.
+  const env = readSupabaseEnv();
+  if (!env) {
+    return new NextResponse(missingEnvMessage(), {
+      status: 500,
+      headers: { "content-type": "text/plain; charset=utf-8" },
+    });
+  }
+
   let response = NextResponse.next({ request });
 
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    env.url,
+    env.key,
     {
       cookies: {
         getAll() {

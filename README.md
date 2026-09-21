@@ -122,12 +122,31 @@ RLS는 이렇게 좁혀 두었습니다 — **읽기는 누구나**(거래 상�
 
 ## 배포
 
-가계부와는 **다른 주소**로 따로 올립니다. Vercel에 올릴 때 환경변수 두 개를 같이 넣어 주세요.
+가계부와는 **다른 주소**로 따로 올립니다 — <https://goguma-market-dun.vercel.app>
 
-```
-NEXT_PUBLIC_SUPABASE_URL
-NEXT_PUBLIC_SUPABASE_ANON_KEY
-```
+### 환경변수 두 개를 반드시 넣어야 합니다
+
+`.env.local`은 저장소에 올라가지 않으므로(올리면 안 되므로), Vercel에는 **따로 넣어 주어야
+합니다.** 안 넣으면 사이트 전체가 `500 MIDDLEWARE_INVOCATION_FAILED`로 멈춥니다.
+로그인 상태를 확인하는 미들웨어가 모든 길목을 지나는데, 수퍼베이스에 붙지 못해 거기서
+넘어지기 때문입니다.
+
+> Vercel → 프로젝트 → **Settings** → **Environment Variables** → 두 개를 넣고 **Save**
+>
+> | Key | Value |
+> | --- | --- |
+> | `NEXT_PUBLIC_SUPABASE_URL` | `.env.local`의 같은 줄 값 |
+> | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | `.env.local`의 같은 줄 값 |
+>
+> 그 다음 **Deployments** → 맨 위 배포의 **⋯** → **Redeploy**
+
+**재배포는 빼먹으면 안 됩니다.** `NEXT_PUBLIC_`으로 시작하는 값은 빌드할 때 코드에
+박히기 때문에, 값을 넣기만 하고 다시 배포하지 않으면 여전히 빈 채로 돕니다.
+
+값이 비어 있으면 이제 흰 화면 대신 **무엇이 없는지 적힌 안내**가 나옵니다
+(`src/lib/supabase/env.ts`).
+
+### 키에 대해
 
 두 값 모두 브라우저로 실려 나가는 **공개 값**입니다. 데이터를 지키는 것은 키가 아니라
 위의 RLS 규칙입니다. `service_role` 키는 절대 이 프로젝트에 두지 마세요.

@@ -1,6 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import type { CookieToSet } from "./cookies";
+import { requireSupabaseEnv } from "./env";
 
 /**
  * 서버(서버 컴포넌트 · 서버 액션 · 라우트 핸들러)에서 쓰는 수퍼베이스 손잡이.
@@ -8,10 +9,11 @@ import type { CookieToSet } from "./cookies";
  */
 export async function createClient() {
   const cookieStore = await cookies();
+  const { url, key } = requireSupabaseEnv();
 
   return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    url,
+    key,
     {
       cookies: {
         getAll() {
