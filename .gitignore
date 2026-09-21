@@ -1,0 +1,16 @@
+node_modules/
+.next/
+out/
+build/
+next-env.d.ts
+*.tsbuildinfo
+
+.env
+.env.local
+.env*.local
+
+.DS_Store
+*.log
+
+# 이 기기에서만 쓰는 실행 설정 (node.exe 절대경로가 들어 있음)
+.claude/
