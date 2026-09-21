@@ -5,8 +5,9 @@ import Masthead from "@/components/Masthead";
 import TopBar from "@/components/TopBar";
 import { createClient } from "@/lib/supabase/server";
 import { STATUS_LABEL, formatPrice, timeAgo, type Status } from "@/lib/items";
+import { SITE_NAME } from "@/lib/site";
 
-export const metadata: Metadata = { title: "내 정보 · 고구마마켓" };
+export const metadata: Metadata = { title: "내 정보" };
 
 function ymd(iso: string | undefined) {
   if (!iso) return "—";
@@ -125,7 +126,7 @@ export default async function MyPage() {
         </div>
       </section>
 
-      <p className="foot">고구마마켓 · 개발 공부용으로 한 걸음씩</p>
+      <p className="foot">{SITE_NAME} · 개발 공부용으로 한 걸음씩</p>
     </div>
   );
 }

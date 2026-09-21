@@ -12,8 +12,9 @@ import {
   timeAgo,
   type Status,
 } from "@/lib/items";
+import { SITE_NAME } from "@/lib/site";
 
-export const metadata: Metadata = { title: "장터 · 고구마마켓" };
+export const metadata: Metadata = { title: "장터" };
 
 type Row = {
   id: string;
@@ -166,7 +167,7 @@ export default async function ItemsPage({
         </ul>
       )}
 
-      <p className="foot">고구마마켓 · 최근 것부터 예순 개까지 보입니다</p>
+      <p className="foot">{SITE_NAME} · 최근 것부터 예순 개까지 보입니다</p>
     </div>
   );
 }

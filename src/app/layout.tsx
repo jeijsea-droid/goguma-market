@@ -1,8 +1,13 @@
 import type { Metadata, Viewport } from "next";
+import { SITE_NAME } from "@/lib/site";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "고구마마켓",
+  title: {
+    default: SITE_NAME,
+    // 각 화면이 title: "로그인" 만 적어 두면 뒤에 가게 이름이 알아서 붙는다.
+    template: `%s · ${SITE_NAME}`,
+  },
   description: "가까운 이웃과 주고받는 중고 장터",
 };
 

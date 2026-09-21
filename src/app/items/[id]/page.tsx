@@ -38,7 +38,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { id } = await params;
   const item = await getItem(id);
-  return { title: item ? `${item.title} · 고구마마켓` : "없는 글 · 고구마마켓" };
+  return { title: item ? item.title : "없는 글" };
 }
 
 export default async function ItemPage({ params }: { params: Promise<{ id: string }> }) {

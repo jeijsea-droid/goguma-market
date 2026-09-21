@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import Masthead from "@/components/Masthead";
 import TopBar from "@/components/TopBar";
 import SignupForm from "./SignupForm";
+import { SITE_NAME } from "@/lib/site";
 
-export const metadata: Metadata = { title: "회원가입 · 고구마마켓" };
+export const metadata: Metadata = { title: "회원가입" };
 
 export default function SignupPage() {
   return (
@@ -11,7 +12,7 @@ export default function SignupPage() {
       <TopBar />
 
       <Masthead
-        title="고구마마켓에 들어오기"
+        title={`${SITE_NAME}에 들어오기`}
         tagline="쓰던 물건에 다음 주인을 찾아 주는 곳"
         stamp="회원가입"
       />
@@ -26,7 +27,7 @@ export default function SignupPage() {
         </div>
       </section>
 
-      <p className="foot">고구마마켓 · 개발 공부용으로 한 걸음씩</p>
+      <p className="foot">{SITE_NAME} · 개발 공부용으로 한 걸음씩</p>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import GogumaMark from "./GogumaMark";
 import { createClient } from "@/lib/supabase/server";
+import { SITE_NAME } from "@/lib/site";
 
 /**
  * 위쪽 길잡이. 서버에서 그리므로 로그인 여부가 처음 그림부터 맞다.
@@ -26,7 +27,7 @@ export default async function TopBar() {
     <div className="topbar">
       <Link className="brand" href="/">
         <GogumaMark />
-        고구마마켓
+        {SITE_NAME}
       </Link>
 
       <Link className="ghost-btn" href="/items">

@@ -2,6 +2,7 @@ import Link from "next/link";
 import Masthead from "@/components/Masthead";
 import TopBar from "@/components/TopBar";
 import { createClient } from "@/lib/supabase/server";
+import { SITE_NAME } from "@/lib/site";
 
 export default async function HomePage() {
   const supabase = await createClient();
@@ -24,7 +25,7 @@ export default async function HomePage() {
       <TopBar />
 
       <Masthead
-        title="고구마마켓"
+        title={SITE_NAME}
         tagline="가까운 이웃과 주고받는 중고 장터"
         stamp="캐 가세요"
       />
@@ -32,7 +33,7 @@ export default async function HomePage() {
       <section className="panel">
         <div className="panel-head">
           <h2>{user ? "어서 오세요" : "아직 손님이십니다"}</h2>
-          <span className="hint">1단계 · 회원가입과 로그인</span>
+          <span className="hint">2단계 · 거래 글까지 됩니다</span>
         </div>
 
         <div className="panel-body">
@@ -103,7 +104,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <p className="foot">고구마마켓 · 김부장의 가계부와 같은 밭에서 자랍니다</p>
+      <p className="foot">{SITE_NAME} · 가계부와 같은 밭에서 자랍니다</p>
     </div>
   );
 }

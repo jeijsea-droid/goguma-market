@@ -5,8 +5,9 @@ import TopBar from "@/components/TopBar";
 import { createClient } from "@/lib/supabase/server";
 import ItemForm from "../ItemForm";
 import { createItem } from "../actions";
+import { SITE_NAME } from "@/lib/site";
 
-export const metadata: Metadata = { title: "물건 내놓기 · 고구마마켓" };
+export const metadata: Metadata = { title: "물건 내놓기" };
 
 export default async function NewItemPage() {
   const supabase = await createClient();
@@ -54,7 +55,7 @@ export default async function NewItemPage() {
         </div>
       </section>
 
-      <p className="foot">고구마마켓 · 사진은 다음 단계에 붙습니다</p>
+      <p className="foot">{SITE_NAME} · 사진은 다음 단계에 붙습니다</p>
     </div>
   );
 }

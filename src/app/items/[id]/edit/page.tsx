@@ -7,7 +7,7 @@ import { createClient } from "@/lib/supabase/server";
 import ItemForm from "../../ItemForm";
 import { updateItem } from "../../actions";
 
-export const metadata: Metadata = { title: "글 고치기 · 고구마마켓" };
+export const metadata: Metadata = { title: "글 고치기" };
 
 export default async function EditItemPage({
   params,

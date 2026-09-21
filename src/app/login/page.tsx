@@ -3,8 +3,9 @@ import Masthead from "@/components/Masthead";
 import TopBar from "@/components/TopBar";
 import { safePath } from "@/lib/auth-errors";
 import LoginForm from "./LoginForm";
+import { SITE_NAME } from "@/lib/site";
 
-export const metadata: Metadata = { title: "로그인 · 고구마마켓" };
+export const metadata: Metadata = { title: "로그인" };
 
 const NOTICES: Record<string, string> = {
   confirm: "확인 링크가 만료되었거나 이미 쓰인 링크입니다. 다시 가입하거나 로그인해 주세요.",
@@ -44,7 +45,7 @@ export default async function LoginPage({
         </div>
       </section>
 
-      <p className="foot">고구마마켓 · 개발 공부용으로 한 걸음씩</p>
+      <p className="foot">{SITE_NAME} · 개발 공부용으로 한 걸음씩</p>
     </div>
   );
 }

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useActionState, useState } from "react";
 import { signUp, type SignUpState } from "./actions";
+import { SITE_NAME } from "@/lib/site";
 
 const EMPTY: SignUpState = {};
 
@@ -101,7 +102,7 @@ export default function SignupForm() {
       </div>
 
       <button className="submit" type="submit" disabled={pending}>
-        {pending ? "밭을 고르는 중…" : "고구마마켓 시작하기"}
+        {pending ? "밭을 고르는 중…" : `${SITE_NAME} 시작하기`}
       </button>
 
       <p className="note" role="status" aria-live="polite">

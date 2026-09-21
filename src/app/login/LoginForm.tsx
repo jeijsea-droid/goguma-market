@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useActionState, useState } from "react";
 import { signIn, type AuthState } from "./actions";
+import { SITE_NAME } from "@/lib/site";
 
 const EMPTY: AuthState = {};
 
@@ -52,7 +53,7 @@ export default function LoginForm({ next }: { next: string }) {
       </p>
 
       <p className="swap">
-        고구마마켓이 처음이신가요? <Link href="/signup">회원가입</Link>
+        {SITE_NAME}이 처음이신가요? <Link href="/signup">회원가입</Link>
       </p>
     </form>
   );
