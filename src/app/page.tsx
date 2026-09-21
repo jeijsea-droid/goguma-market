@@ -42,9 +42,15 @@ export default async function HomePage() {
                 <b>{nickname ?? user.email}</b> 님으로 들어와 계십니다. 이 상태는 쿠키에
                 담겨 있어, 창을 닫았다 열어도 그대로입니다.
               </p>
-              <p>
+              <p style={{ display: "flex", gap: 8, flexWrap: "wrap", margin: 0 }}>
+                <Link className="ghost-btn" href="/items">
+                  장터 둘러보기
+                </Link>
+                <Link className="ghost-btn" href="/items/new">
+                  물건 내놓기
+                </Link>
                 <Link className="ghost-btn" href="/mypage">
-                  내 정보 보기
+                  내 정보
                 </Link>
               </p>
             </>
@@ -55,6 +61,9 @@ export default async function HomePage() {
                 됩니다.
               </p>
               <p style={{ display: "flex", gap: 8, flexWrap: "wrap", margin: 0 }}>
+                <Link className="ghost-btn" href="/items">
+                  장터 둘러보기
+                </Link>
                 <Link className="ghost-btn" href="/signup">
                   회원가입
                 </Link>
@@ -74,12 +83,12 @@ export default async function HomePage() {
         </div>
         <div className="panel-body">
           <ul className="soon">
-            <li>
-              <b>물건 내놓기</b> — 사진, 제목, 값, 동네
-              <span className="tag">2단계</span>
+            <li className="done">
+              <b>물건 내놓기</b> — 올리고, 고치고, 거두기
+              <span className="tag">2단계 · 됨</span>
             </li>
             <li>
-              <b>장터 둘러보기</b> — 목록과 자세히 보기
+              <b>사진 붙이기</b> — 수퍼베이스 스토리지에 올려 걸기
               <span className="tag">3단계</span>
             </li>
             <li>

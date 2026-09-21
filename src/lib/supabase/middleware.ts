@@ -2,8 +2,11 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import type { CookieToSet } from "./cookies";
 
-/** 로그인해야 들어갈 수 있는 길. 앞으로 /sell, /chat 이 늘어나면 여기에 적는다. */
-const PROTECTED = ["/mypage"];
+/** 로그인해야 들어갈 수 있는 길. 앞으로 /chat 이 늘어나면 여기에 적는다. */
+const PROTECTED = ["/mypage", "/items/new"];
+
+/** 가운데에 글 번호가 끼는 길은 모양으로 가린다 — /items/<id>/edit */
+const PROTECTED_SHAPES = [/^\/items\/[^/]+\/edit\/?$/];
 
 /** 로그인한 사람이 다시 올 까닭이 없는 길. */
 const GUEST_ONLY = ["/login", "/signup"];
@@ -41,7 +44,11 @@ export async function updateSession(request: NextRequest) {
 
   const path = request.nextUrl.pathname;
 
-  if (!user && PROTECTED.some((p) => path === p || path.startsWith(p + "/"))) {
+  const needsLogin =
+    PROTECTED.some((p) => path === p || path.startsWith(p + "/")) ||
+    PROTECTED_SHAPES.some((re) => re.test(path));
+
+  if (!user && needsLogin) {
     const to = request.nextUrl.clone();
     to.pathname = "/login";
     to.search = "";

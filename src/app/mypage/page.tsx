@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import Masthead from "@/components/Masthead";
 import TopBar from "@/components/TopBar";
 import { createClient } from "@/lib/supabase/server";
+import { STATUS_LABEL, formatPrice, timeAgo, type Status } from "@/lib/items";
 
 export const metadata: Metadata = { title: "내 정보 · 고구마마켓" };
 
@@ -28,6 +30,20 @@ export default async function MyPage() {
     .select("nickname, region, created_at")
     .eq("id", user.id)
     .maybeSingle();
+
+  const { data: mineRaw } = await supabase
+    .from("goguma_items")
+    .select("id,title,price,status,created_at")
+    .eq("seller_id", user.id)
+    .order("created_at", { ascending: false });
+
+  const mine = (mineRaw ?? []) as {
+    id: string;
+    title: string;
+    price: number;
+    status: Status;
+    created_at: string;
+  }[];
 
   return (
     <div className="wrap narrow">
@@ -61,6 +77,35 @@ export default async function MyPage() {
             <dt>회원 번호</dt>
             <dd className="mono">{user.id}</dd>
           </dl>
+        </div>
+      </section>
+
+      <section className="panel">
+        <div className="panel-head">
+          <h2>내가 내놓은 것</h2>
+          <span className="hint">
+            <Link className="ghost-btn" href="/items/new">
+              물건 내놓기
+            </Link>
+          </span>
+        </div>
+        <div className="panel-body">
+          {mine.length === 0 ? (
+            <p className="empty">아직 내놓은 물건이 없습니다.</p>
+          ) : (
+            <ul className="mine">
+              {mine.map((it) => (
+                <li key={it.id}>
+                  <Link href={`/items/${it.id}`}>
+                    <span className="t">{it.title}</span>
+                    <span className="p">{formatPrice(it.price)}</span>
+                    <span className={`badge ${it.status}`}>{STATUS_LABEL[it.status]}</span>
+                    <span className="w">{timeAgo(it.created_at)}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </section>
 

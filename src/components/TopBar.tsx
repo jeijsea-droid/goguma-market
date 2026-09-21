@@ -29,6 +29,10 @@ export default async function TopBar() {
         고구마마켓
       </Link>
 
+      <Link className="ghost-btn" href="/items">
+        장터
+      </Link>
+
       <span className="spacer" />
 
       {user ? (
@@ -36,6 +40,9 @@ export default async function TopBar() {
           <span className="who">
             <b>{nickname ?? user.email}</b> 님
           </span>
+          <Link className="ghost-btn" href="/items/new">
+            내놓기
+          </Link>
           <Link className="ghost-btn" href="/mypage">
             내 정보
           </Link>
