@@ -4,4 +4,4 @@
  * 각 화면의 탭 제목은 여기서 다시 적지 않는다 — app/layout.tsx 에 적어 둔
  * title.template 이 "로그인" 같은 짧은 이름 뒤에 가게 이름을 알아서 붙여 준다.
  */
-export const SITE_NAME = "김부장의 고구마 마켓";
+export const SITE_NAME = "김부장 마켓";

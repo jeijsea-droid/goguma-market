@@ -1,5 +1,5 @@
 /* ────────────────────────────────────────────────
-   김부장의 고구마 마켓 — 색과 결은 "김부장의 가계부"에서 그대로 가져왔다.
+   김부장 마켓 — 색과 결은 "김부장의 가계부"에서 그대로 가져왔다.
    :root 값만 바꾸면 계절을 통째로 갈아입힐 수 있다.
    ──────────────────────────────────────────────── */
 
@@ -768,3 +768,128 @@ textarea:focus{
   object-fit:cover;
   display:block;
 }
+
+/* ── 분류별 색 ───────────────────────── */
+/*
+   분류 열세 가지에 저마다 색을 하나씩 준다.
+   --cat      : 글자와 테두리에 쓰는 진한 색
+   --cat-soft : 바탕에 깔 옅은 색 (같은 색을 묽게 탄 것)
+
+   색을 이 한 곳에 모아 둔 까닭은 :root 와 같다 — 나중에 계절을 갈아입힐 때
+   화면 곳곳을 뒤지지 않고 여기만 고치면 되게 하려는 것이다.
+   낮에는 어두운 색, 밤에는 밝은 색을 쓴다. 바탕이 뒤바뀌기 때문이다.
+
+   이름표(digital, appliance …)는 src/lib/items.ts 의 CATEGORY_SLUG 와 짝이다.
+*/
+[data-cat="digital"]  { --cat:#2F7C7A; --cat-soft:rgba(47,124,122,.13) }
+[data-cat="appliance"]{ --cat:#3A6EA5; --cat-soft:rgba(58,110,165,.13) }
+[data-cat="furniture"]{ --cat:#8A5A33; --cat-soft:rgba(138,90,51,.13) }
+[data-cat="household"]{ --cat:#6E8B3D; --cat-soft:rgba(110,139,61,.14) }
+[data-cat="clothes"]  { --cat:#8B4A6B; --cat-soft:rgba(139,74,107,.13) }
+[data-cat="beauty"]   { --cat:#C2557F; --cat-soft:rgba(194,85,127,.13) }
+[data-cat="book"]     { --cat:#4B4E8C; --cat-soft:rgba(75,78,140,.13) }
+[data-cat="hobby"]    { --cat:#7A4FA3; --cat-soft:rgba(122,79,163,.13) }
+[data-cat="sports"]   { --cat:#3E7D4F; --cat-soft:rgba(62,125,79,.13) }
+[data-cat="kids"]     { --cat:#B5842A; --cat-soft:rgba(181,132,42,.15) }
+[data-cat="pet"]      { --cat:#C4632C; --cat-soft:rgba(196,99,44,.13) }
+[data-cat="food"]     { --cat:#B23A3A; --cat-soft:rgba(178,58,58,.13) }
+[data-cat="etc"]      { --cat:#7A6A58; --cat-soft:rgba(122,106,88,.14) }
+
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) [data-cat="digital"]  { --cat:#6FC4C0; --cat-soft:rgba(111,196,192,.16) }
+  :root:not([data-theme="light"]) [data-cat="appliance"]{ --cat:#7FAEE0; --cat-soft:rgba(127,174,224,.16) }
+  :root:not([data-theme="light"]) [data-cat="furniture"]{ --cat:#C79A6E; --cat-soft:rgba(199,154,110,.16) }
+  :root:not([data-theme="light"]) [data-cat="household"]{ --cat:#A9C97A; --cat-soft:rgba(169,201,122,.16) }
+  :root:not([data-theme="light"]) [data-cat="clothes"]  { --cat:#D086AE; --cat-soft:rgba(208,134,174,.16) }
+  :root:not([data-theme="light"]) [data-cat="beauty"]   { --cat:#E893B4; --cat-soft:rgba(232,147,180,.16) }
+  :root:not([data-theme="light"]) [data-cat="book"]     { --cat:#8F93D6; --cat-soft:rgba(143,147,214,.16) }
+  :root:not([data-theme="light"]) [data-cat="hobby"]    { --cat:#B58FDC; --cat-soft:rgba(181,143,220,.16) }
+  :root:not([data-theme="light"]) [data-cat="sports"]   { --cat:#7FC08F; --cat-soft:rgba(127,192,143,.16) }
+  :root:not([data-theme="light"]) [data-cat="kids"]     { --cat:#E0B463; --cat-soft:rgba(224,180,99,.16) }
+  :root:not([data-theme="light"]) [data-cat="pet"]      { --cat:#EA9463; --cat-soft:rgba(234,148,99,.16) }
+  :root:not([data-theme="light"]) [data-cat="food"]     { --cat:#E57B7B; --cat-soft:rgba(229,123,123,.16) }
+  :root:not([data-theme="light"]) [data-cat="etc"]      { --cat:#B6A58F; --cat-soft:rgba(182,165,143,.16) }
+}
+:root[data-theme="dark"] [data-cat="digital"]  { --cat:#6FC4C0; --cat-soft:rgba(111,196,192,.16) }
+:root[data-theme="dark"] [data-cat="appliance"]{ --cat:#7FAEE0; --cat-soft:rgba(127,174,224,.16) }
+:root[data-theme="dark"] [data-cat="furniture"]{ --cat:#C79A6E; --cat-soft:rgba(199,154,110,.16) }
+:root[data-theme="dark"] [data-cat="household"]{ --cat:#A9C97A; --cat-soft:rgba(169,201,122,.16) }
+:root[data-theme="dark"] [data-cat="clothes"]  { --cat:#D086AE; --cat-soft:rgba(208,134,174,.16) }
+:root[data-theme="dark"] [data-cat="beauty"]   { --cat:#E893B4; --cat-soft:rgba(232,147,180,.16) }
+:root[data-theme="dark"] [data-cat="book"]     { --cat:#8F93D6; --cat-soft:rgba(143,147,214,.16) }
+:root[data-theme="dark"] [data-cat="hobby"]    { --cat:#B58FDC; --cat-soft:rgba(181,143,220,.16) }
+:root[data-theme="dark"] [data-cat="sports"]   { --cat:#7FC08F; --cat-soft:rgba(127,192,143,.16) }
+:root[data-theme="dark"] [data-cat="kids"]     { --cat:#E0B463; --cat-soft:rgba(224,180,99,.16) }
+:root[data-theme="dark"] [data-cat="pet"]      { --cat:#EA9463; --cat-soft:rgba(234,148,99,.16) }
+:root[data-theme="dark"] [data-cat="food"]     { --cat:#E57B7B; --cat-soft:rgba(229,123,123,.16) }
+:root[data-theme="dark"] [data-cat="etc"]      { --cat:#B6A58F; --cat-soft:rgba(182,165,143,.16) }
+
+/* 둘러보기의 분류 단추 — 저마다 제 색을 입는다 */
+.cats a[data-cat]{
+  background:var(--cat-soft);
+  border-color:transparent;
+  color:var(--cat);
+  font-weight:600;
+}
+.cats a[data-cat]:hover{border-color:var(--cat)}
+/* 고른 것은 색을 꽉 채워 한눈에 드러낸다 */
+.cats a.chip-on[data-cat]{
+  background:var(--cat);
+  border-color:var(--cat);
+  color:var(--on-goguma);
+}
+
+/* 물건 카드 — 사진 아래 제 분류 색으로 띠를 두른다 */
+.item-card[data-cat] .item-shot{border-bottom:3px solid var(--cat)}
+/* 사진 없는 물건은 빈 자리도 제 분류 색으로 은은하게 */
+.item-card[data-cat] .item-shot.bare{
+  background:linear-gradient(160deg,var(--cat-soft),var(--surface-2));
+}
+.item-card[data-cat]:hover{border-color:var(--cat)}
+
+/* 카드 아래 분류 이름을 알약 모양으로 */
+.meta .cat-pill{
+  background:var(--cat-soft);
+  color:var(--cat);
+  font-weight:600;
+  border-radius:999px;
+  padding:1px 8px;
+}
+/* 알약 앞에는 가운뎃점을 찍지 않는다 (맨 앞이므로) */
+.meta .cat-pill + span::before{content:"";margin-right:0}
+
+/* ── 상태별 개수 ─────────────────────── */
+/*
+   장터 전체에 판매중·예약중·거래완료가 각각 몇인지 한 줄로 보여 준다.
+   화면에 보이는 예순 개가 아니라 표 전체를 센 값이다.
+*/
+.tally{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-bottom:14px;
+}
+.tally div{
+  flex:1 1 92px;
+  display:flex;
+  align-items:baseline;
+  justify-content:center;
+  gap:6px;
+  padding:9px 10px;
+  border:1px solid var(--line);
+  border-radius:var(--radius-sm);
+  background:var(--surface-2);
+}
+.tally b{
+  font-family:var(--mono);
+  font-variant-numeric:tabular-nums;
+  font-size:19px;
+  font-weight:600;
+  letter-spacing:-.02em;
+}
+.tally span{font-size:12px;color:var(--muted)}
+.tally .t-selling{background:var(--plus-soft);border-color:transparent}
+.tally .t-selling b{color:var(--plus)}
+.tally .t-reserved{background:var(--minus-soft);border-color:transparent}
+.tally .t-reserved b{color:var(--minus)}
+.tally .t-sold b{color:var(--muted)}

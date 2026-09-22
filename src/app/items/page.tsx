@@ -7,6 +7,8 @@ import { createClient } from "@/lib/supabase/server";
 import {
   CATEGORIES,
   STATUS_LABEL,
+  STATUS_ORDER,
+  categorySlug,
   formatPrice,
   isCategory,
   sanitizeQuery,
@@ -64,8 +66,28 @@ export default async function ItemsPage({
   if (cat) query = query.eq("category", cat);
   if (q) query = query.ilike("title", `%${q}%`);
 
-  const { data, error } = await query;
+  /*
+    상태별 개수는 장터 **전체**를 센다 — 고른 분류나 검색어에 상관없이,
+    또 화면에 펴 놓은 예순 개에도 상관없이 표 전체가 대상이다.
+
+    head: true 는 "줄 내용은 필요 없고 개수만 달라"는 뜻이다.
+    글 내용을 실어 오지 않으므로 세 번을 물어도 가볍다.
+  */
+  const [{ data, error }, ...counts] = await Promise.all([
+    query,
+    ...STATUS_ORDER.map((s) =>
+      supabase
+        .from("goguma_items")
+        .select("id", { count: "exact", head: true })
+        .eq("status", s)
+    ),
+  ]);
+
   const items = (data ?? []) as unknown as Row[];
+  const tally = STATUS_ORDER.map((s, i) => ({
+    status: s,
+    count: counts[i].count ?? 0,
+  }));
 
   return (
     <div className="wrap">
@@ -94,6 +116,15 @@ export default async function ItemsPage({
         </div>
 
         <div className="panel-body">
+          <div className="tally">
+            {tally.map(({ status, count }) => (
+              <div key={status} className={`t-${status}`}>
+                <b>{count}</b>
+                <span>{STATUS_LABEL[status]}</span>
+              </div>
+            ))}
+          </div>
+
           <form className="filters" action="/items" method="get">
             {cat ? <input type="hidden" name="cat" value={cat} /> : null}
             <div className="search">
@@ -115,6 +146,7 @@ export default async function ItemsPage({
           </form>
 
           <div className="cats" style={{ marginTop: 12 }}>
+            {/* '전체'는 어느 분류도 아니므로 data-cat 을 달지 않는다 — 가게 색을 그대로 쓴다. */}
             <Link
               className={cat === null ? "chip-on" : undefined}
               href={href(null, q)}
@@ -124,6 +156,7 @@ export default async function ItemsPage({
             {CATEGORIES.map((c) => (
               <Link
                 key={c}
+                data-cat={categorySlug(c)}
                 className={cat === c ? "chip-on" : undefined}
                 href={href(c, q)}
               >
@@ -155,7 +188,12 @@ export default async function ItemsPage({
             const cover = it.photos?.[0];
             return (
               <li key={it.id}>
-                <Link className="item-card" href={`/items/${it.id}`}>
+                {/* data-cat 이 이 카드가 쓸 색을 정한다. 실제 색은 globals.css 에 있다. */}
+                <Link
+                  className="item-card"
+                  data-cat={categorySlug(it.category)}
+                  href={`/items/${it.id}`}
+                >
                   <div className={cover ? "item-shot" : "item-shot bare"}>
                     {cover ? (
                       <img src={photoUrl(cover)} alt="" loading="lazy" />
@@ -176,7 +214,7 @@ export default async function ItemsPage({
                     </div>
                     <p className="price">{formatPrice(it.price)}</p>
                     <p className="meta">
-                      <span>{it.category}</span>
+                      <span className="cat-pill">{it.category}</span>
                       {it.region ? <span>{it.region}</span> : null}
                       <span>{it.seller?.nickname ?? "탈퇴한 이웃"}</span>
                       <span>{timeAgo(it.created_at)}</span>

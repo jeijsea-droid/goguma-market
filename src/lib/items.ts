@@ -23,6 +23,35 @@ export function isCategory(v: string): v is Category {
   return (CATEGORIES as readonly string[]).includes(v);
 }
 
+/**
+ * 분류마다 붙이는 영문 이름표.
+ *
+ * 색을 입히려면 CSS 가 "이 카드는 어느 분류인가"를 알아야 하는데,
+ * 한글이나 가운뎃점(·)을 CSS 선택자에 그대로 쓰면 다루기 번거롭다.
+ * 그래서 화면에는 한글을 쓰되, 색을 고르는 열쇠로는 이 영문 이름표를 쓴다.
+ * 실제 색은 globals.css 의 [data-cat="..."] 한 곳에 모여 있다.
+ */
+export const CATEGORY_SLUG: Record<Category, string> = {
+  "디지털기기": "digital",
+  "생활가전": "appliance",
+  "가구·인테리어": "furniture",
+  "생활용품": "household",
+  "의류": "clothes",
+  "뷰티·미용": "beauty",
+  "도서·티켓": "book",
+  "취미·게임": "hobby",
+  "스포츠·레저": "sports",
+  "유아동": "kids",
+  "반려동물": "pet",
+  "식품": "food",
+  "기타": "etc",
+};
+
+/** 분류 이름으로 이름표를 찾는다. 모르는 값이면 '기타'의 것을 준다. */
+export function categorySlug(name: string): string {
+  return isCategory(name) ? CATEGORY_SLUG[name] : CATEGORY_SLUG["기타"];
+}
+
 /** 거래 상태. */
 export const STATUS_LABEL = {
   selling: "판매중",
@@ -31,6 +60,9 @@ export const STATUS_LABEL = {
 } as const;
 
 export type Status = keyof typeof STATUS_LABEL;
+
+/** 세어서 보여 줄 때의 차례. 팔고 있는 것이 먼저다. */
+export const STATUS_ORDER = ["selling", "reserved", "sold"] as const;
 
 export function isStatus(v: string): v is Status {
   return v === "selling" || v === "reserved" || v === "sold";
